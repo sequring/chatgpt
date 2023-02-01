@@ -35,14 +35,12 @@ type NullWriter int
 func (NullWriter) Write([]byte) (int, error) { return 0, nil }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	_ = godotenv.Load()
 	log.SetOutput(new(NullWriter))
 	apiKey := os.Getenv("CHATGP_API_KEY")
 	if apiKey == "" {
-		panic("CHATGP_API_KEY isn't set")
+		fmt.Println("CHATGP_API_KEY not set")
+		os.Exit(1)
 	}
 
 	ctx := context.Background()
